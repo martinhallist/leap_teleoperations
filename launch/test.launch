@@ -1,0 +1,48 @@
+<launch>
+  <!-- If sim=false, then robot_ip is required -->
+  <arg name="sim" default="true" />
+  <arg name="robot_ip" unless="$(arg sim)" />
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+  
+
+  <group ns="left_arm">
+    <rosparam command="load" file="$(find baka)/settings/pepper/left_arm_jog_settings.yaml"/>
+    <node name="left_jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen" >
+      <param name="parameter_ns" type="string" value="left_arm" />
+    </node>
+  </group>
+
+  <group ns="right_arm">
+    <rosparam command="load" file="$(find baka)/settings/pepper/right_arm_jog_settings.yaml"/>
+    <node name="right_jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen" >
+      <param name="parameter_ns" type="string" value="right_arm" />
+    </node>
+  </group>
+
+  <?ignore
+  <!-- tested recommended approach -->
+  <!-- load parameters for the right arm (note the 'ns' attribute) -->
+  <rosparam command="load" file="$(find dual_baka)/settings/right_jog_settings.yaml" ns="right_arm" />
+
+  <!-- start a jog_arm instance for the right arm -->
+  <node name="right_jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen" >
+    <param name="parameter_ns" type="string" value="right_arm" />
+  </node>
+
+  <!-- load parameters for the left arm (note the 'ns' attribute) -->
+  <rosparam command="load" file="$(find dual_baka)/settings/left_jog_settings.yaml" ns="left_arm" />
+
+  <!-- start a jog_arm instance for the left arm -->
+  <node name="left_jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen" >
+    <param name="parameter_ns" type="string" value="left_arm" />
+  </node>
+  ?>
+
+  <!-- Load the listener parameters and start the driver node -->
+  <rosparam file="$(find leap_motion)/config/listener_params.yaml" command="load" />
+  <node pkg="leap_motion" type="leap_motion_driver_node" name="leap_driver" output="screen" />
+
+  <!-- Launch our own script -->
+  <node name="dual_arm" pkg="baka" type="dual_armed_robot.py" respawn="false" output="screen"/>
+</launch>

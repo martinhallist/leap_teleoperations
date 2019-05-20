@@ -1,0 +1,29 @@
+<launch>
+  <!-- If sim=false, then robot_ip is required -->
+  <arg name="sim" default="false" />
+  <arg name="robot_ip" unless="$(arg sim)" />
+  <!-- By default, we are not in debug mode -->
+  <arg name="debug" default="false" />
+
+  <!-- Launch ur_gazebo -->
+  <!--
+  <include file="$(find ur_modern_driver)/launch/ur5_bringup_joint_limited.launch">
+    <arg name="robot_ip" value="192.168.1.100" />
+  </include>
+  -->
+
+  <!-- Load UR5 URDF file - robot description file -->
+  <include file="$(find ur5_moveit_config)/launch/ur5_moveit_planning_execution.launch">
+    <arg name="limited" value="true" />
+  </include>
+  
+  <node name="jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen"/>
+  <rosparam command="load" file="$(find baka)/settings/jog_settings_real.yaml"/>
+  
+  <!-- Load the listener parameters and start the driver node -->
+  <rosparam file="$(find leap_motion)/config/listener_params.yaml" command="load"/>
+  <node pkg="leap_motion" type="leap_motion_driver_node" name="leap_driver" output="screen"/>
+
+  <!-- Launch our own script -->
+  <node name="ur5_single" pkg="baka" type="ur5_single.py" respawn="false" output="screen"/>
+</launch>
