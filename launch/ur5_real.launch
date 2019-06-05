@@ -18,12 +18,12 @@
   </include>
   
   <node name="jog_arm_server" pkg="jog_arm" type="jog_arm_server" output="screen"/>
-  <rosparam command="load" file="$(find baka)/settings/jog_settings_real.yaml"/>
+  <rosparam command="load" file="$(find leap_teleoperations)/settings/jog_settings_real.yaml"/>
   
   <!-- Load the listener parameters and start the driver node -->
   <rosparam file="$(find leap_motion)/config/listener_params.yaml" command="load"/>
   <node pkg="leap_motion" type="leap_motion_driver_node" name="leap_driver" output="screen"/>
 
   <!-- Launch our own script -->
-  <node name="ur5_single" pkg="baka" type="ur5_single.py" respawn="false" output="screen"/>
+  <node name="ur5_single" pkg="leap_teleoperations" type="ur5_single.py" respawn="false" output="screen"/>
 </launch>
