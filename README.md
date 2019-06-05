@@ -64,9 +64,10 @@ Wait for arm to appear in Gazebo, then move to next step
 Are you using same network as robot arm? Have you entered correct IP?
  - **Arm does almost full spin for some positions**
 It's common problem with MoveIt! that jog_arm uses. Movements are restricted to [-?, ?], so it doesn't have 360 degrees movement freedom.
- - **error: ‘const struct hardware_interface::ControllerInfo’ has no member named ‘hardware_interface’ after catkin_make**
- Apply this fix: https://github.com/iron-ox/ur_modern_driver/commit/883070d0b6c0c32b78bb1ca7155b8f3a1ead416c - **Roslaunch does not find my files**
- Make files executable.
+ - **error: â€˜const struct hardware_interface::ControllerInfoâ€™ has no member named â€˜hardware_interfaceâ€™ after catkin_make**
+ Apply this fix: https://github.com/iron-ox/ur_modern_driver/commit/883070d0b6c0c32b78bb1ca7155b8f3a1ead416c
+ - **Roslaunch does not find my files**
+Make files executable.
 
 # Experimental solution
 There is also experimental source code for dual arm control, that doesn't work right now.
