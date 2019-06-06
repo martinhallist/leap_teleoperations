@@ -12,9 +12,9 @@ from leap_motion.msg import Hand, Human
 
 class MovingRobot(object):
     def leapData(self, leap_msg):
-        leftIsPresent = leap_msg.right_hand.is_present
+        rightIsPresent = leap_msg.right_hand.is_present
         
-        if leftIsPresent:
+        if rightIsPresent:
             hand = leap_msg.right_hand
             position = hand.palm_center
 

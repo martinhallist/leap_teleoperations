@@ -41,7 +41,7 @@ Now setup should be done.
  5. Next launch UR5 gazebo (starting everything together causes UR5 arm to fall): ***roslaunch ur_gazebo ur5.launch limited:=true***
  6. Next launch our launch file: ***roslaunch leap_teleoperations ur5_simu.launch***
 
-Use your left hand to control robot manipulator.
+Use your right hand to control robot manipulator.
 
 # 4. Using real robot
 
@@ -52,7 +52,7 @@ Use your left hand to control robot manipulator.
  5. Launch ur_modern_driver: ***roslaunch ur_modern_driver ur5_bringup.launch robot_ip:=ROBOT_IP_ADDRESS*** where ROBOT_IP_ADDRESS is your robot network IP address.
  6. Next launch our launch file: ***roslaunch leap_teleoperations ur5_real.launch***
 
-Use your left hand to control robot manipulator.
+Use your right hand to control robot manipulator.
 
 # 5. Common problems
 
