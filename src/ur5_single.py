@@ -12,12 +12,13 @@ from leap_motion.msg import Hand, Human
 
 class MovingRobot(object):
     def leapData(self, leap_msg):
-        leftIsPresent = leap_msg.left_hand.is_present
+        leftIsPresent = leap_msg.right_hand.is_present
         
         if leftIsPresent:
-            hand = leap_msg.left_hand
+            hand = leap_msg.right_hand
             position = hand.palm_center
-            rpy = [-hand.pitch, hand.yaw, -hand.roll]
+
+            rpy = [-hand.yaw, -hand.roll, -hand.pitch]
             self.movement(position, rpy)
     
     def movement(self, position, rpy):
@@ -90,13 +91,18 @@ class MovingRobot(object):
         else:
             twist.twist.linear.z = temp
         
-        twist.twist.angular.x = rpy[0] - prevAng.x
-        twist.twist.angular.y = rpy[1] - prevAng.y
-        twist.twist.angular.z = rpy[2] - prevAng.z
-
         twist.twist.angular.x = (rpy[0] - prevAng.x)
         twist.twist.angular.y = (rpy[1] - prevAng.y)
         twist.twist.angular.z = (rpy[2] - prevAng.z)
+
+        if twist.twist.angular.x > 3.14:
+            twist.twist.angular.x = (-rpy[0] + prevAng.x) - pi
+
+        if twist.twist.angular.y > 3.14:
+            twist.twist.angular.y = (-rpy[1] + prevAng.y) - pi
+
+        if twist.twist.angular.x > 3.14:
+            twist.twist.angular.z = (-rpy[2] + prevAng.z) - pi
 
         if twist.twist.angular.x > 1:
             twist.twist.angular.x = 1
@@ -110,7 +116,8 @@ class MovingRobot(object):
             twist.twist.angular.z = 1
         elif twist.twist.angular.z < -1:
             twist.twist.angular.z = -1
-
+        
+        rospy.loginfo(rpy[0])
         rospy.loginfo(twist.twist)
         self.jogPub.publish(twist)
     
