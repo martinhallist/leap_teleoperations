@@ -39,6 +39,7 @@ Now setup should be done.
  4. In order to enable Leap SDK, open terminal and use command:
     ***sudo leapd***
  5. Next launch UR5 gazebo (starting everything together causes UR5 arm to fall): ***roslaunch ur_gazebo ur5.launch limited:=true***
+     Then wait robot to fully load. During this it might give error message. Redo this step and continue if robot is fully loaded in Gazebo simulation
  6. Next launch our launch file: ***roslaunch leap_teleoperations ur5_simu.launch***
 
 Use your right hand to control robot manipulator.
@@ -68,6 +69,9 @@ It's common problem with MoveIt! that jog_arm uses. Movements are restricted to 
  Apply this fix: https://github.com/iron-ox/ur_modern_driver/commit/883070d0b6c0c32b78bb1ca7155b8f3a1ead416c
  - **Roslaunch does not find my files**
  Make files executable.
+ - **RuntimeError: Unable to connect to move_group action server 'move_group' within allotted time (5s)**
+**Simulation:** you haven't launched UR5 Gazebo (***roslaunch ur_gazebo ur5.launch limited:=true***). Wait model to fully load and then launch our own launch file (***roslaunch leap_teleoperations ur5_simu.launch***).
+**Real robot:** **A)** Check if you and robot are in the same network. Try to ping robot IP to test that. **B)** You haven't launched UR5 ur_modern_driver. **C)** You haven't enabled or turned on UR5 robot.
 
 # Experimental solution
 There is also experimental source code for dual arm control, that doesn't work right now.
